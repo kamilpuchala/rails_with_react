@@ -1,4 +1,4 @@
-var EventApplication = React.createClass({
+const EventApplication = React.createClass({
 	getInitialState: function(){
 		return { events: [] };
 	},
@@ -6,7 +6,7 @@ var EventApplication = React.createClass({
 		this.getDataFromApi();
 	},
 	getDataFromApi: function() {
-		var self = this;
+		let self = this;
 		$.ajax({
 			url: '/api/events',
 			success: function(data) {
@@ -21,8 +21,14 @@ var EventApplication = React.createClass({
     this.setState({ events: events });
   },
   handleAdd: function(event) {
-  	var events = this.state.events;
+  	let events = this.state.events;
   	events.push(event);
+  	this.setState({ events: events });
+  },
+  handleDeleteRecord: function(event) {
+  	let events = this.state.events.slice();
+  	let index = events.indexOf(event);
+  	events.splice(index, 1);
   	this.setState({ events: events });
   },
 	render: function() {
@@ -41,7 +47,8 @@ var EventApplication = React.createClass({
 				</div>
 				<div className="row">
 					<div className="col-md-12">
-						<EventTable events={this.state.events} />
+						<EventTable events={this.state.events}
+												handleDeleteRecord={this.handleDeleteRecord} />
 					</div>
 				</div>
 			</div>
